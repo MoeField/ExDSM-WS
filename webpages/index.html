@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="content-type" content="text/html";charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>魔幻的整活界面</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-box-1">
+            <div class="register-box hidden" >
+                <h1>register</h1>
+                <input type="text" placeholder="用户名">
+                <input type="text" placeholder="姓名">
+                <input type="password" placeholder="密码">
+                <input type="tel" placeholder="电话">
+                <input type="text" placeholder="地址">
+                <button>注册</button>
+            </div>
+            <div class="login-box"  >
+                <h1>login</h1>
+                <input type="text" placeholder="用户名">
+                <input type="password" placeholder="密码">
+                <button id="loding">登录</button>
+            </div>
+        </div>
+        <div class="con-box left ">
+            <h2>欢迎来到<span>魔幻商城</span></h2>
+            <p>准备开始<span>整活</span></p>
+            <img src="4.jpg" alt=" ">
+            <p>已有账号</p>
+            <button id="login">去登录</button>
+        </div>
+        <div class="con-box right">
+            <h2>欢迎来到<span>魔幻商城</span></h2>
+            <p>速速开始<span>整活</span></p>
+            <img src="3.png" alt=" ">
+            <p>没有账号？</p>
+            <button id="register">去注册</button>
+        </div> 
+        <div class="form-box-2 hidden">
+            <div class="first " >
+                <button id="我的包裹">我的包裹</button>
+            </div>
+            <div class="second"  >
+                <button id="寄出包裹">寄出包裹</button>
+            </div>
+            <div class="third" >
+                <button id="快递查询">快递查询</button>
+            </div>
+            <div class="forth" >
+                <button id="我的钱包">我的钱包</button>
+            </div>
+            <div class="fifth" >
+                <button id="我的账户">我的账户</button>
+            </div>
+            <div class="sixth"  >
+                <button id="密码修改">密码修改</button>
+            </div>
+        </div>
+        <div class="box box-1 hidden">
+            <h2>我的包裹</h2>
+            <button>确认收货</button>
+            <button>未收到</button>
+        </div>
+        <div class="box box-2 hidden">
+            <h2>寄出包裹</h2>
+            <input type="text" placeholder="收件人用户名">
+            <input type="text" placeholder="包裹描述">
+            <input type="text" placeholder="包裹大小">
+            <button>确认发货</button>
+        </div>
+        <div class="box box-3 hidden">
+            <h2>快递查询</h2>
+            <input type="text" placeholder="运单号">
+            <button>确认查询</button>
+        </div>
+        <div class="box box-4 hidden">
+            <h2>我的钱包</h2>
+            <input type="text" placeholder="输入充值金额">
+            <button>确认充值</button>
+            <input type="password" placeholder="输入密码">
+            <button>确认查询</button>
+        </div>
+        <div class="box box-5 hidden">
+            <h2>我的账户</h2>
+            <label>用户名:</label>
+            <input type="text">
+            <label>姓名:</label>
+            <input type="text">
+            <label>电话:</label>
+            <input type="tel">
+            <label>地址:</label>
+            <input type="text">
+            <button>确认修改</button>
+        </div>
+        <div class="box box-6 hidden">
+            <h2>密码修改</h2>
+            <input type="password" placeholder="新的密码">
+            <input type="password" placeholder="确认密码">
+            <button>确认修改</button>
+        </div>
+    </div>    
+    <script>
+        let login=document.getElementById('login');
+        let register=document.getElementById('register');
+        let form_box_1=document.getElementsByClassName('form-box-1')[0];
+        let register_box=document.getElementsByClassName('register-box')[0];
+        let login_box=document.getElementsByClassName('login-box')[0];
+        register.addEventListener('click',()=>{
+            form_box_1.style.transform='translateX(80%)';
+            login_box.classList.add('hidden');
+            register_box.classList.remove('hidden');
+        })
+        login.addEventListener('click',()=>{
+            form_box_1.style.transform='translateX(0%)';
+            register_box.classList.add('hidden');
+            login_box.classList.remove('hidden');
+        })
+        let 我的包裹=document.getElementById('我的包裹');
+        let 寄出包裹=document.getElementById('寄出包裹');
+        let 快递查询=document.getElementById('快递查询');
+        let 我的钱包=document.getElementById('我的钱包');
+        let 我的账户=document.getElementById('我的账户');
+        let 密码修改=document.getElementById('密码修改');
+        let box_1=document.getElementsByClassName('box-1')[0];
+        let box_2=document.getElementsByClassName('box-2')[0];
+        let box_3=document.getElementsByClassName('box-3')[0];
+        let box_4=document.getElementsByClassName('box-4')[0];
+        let box_5=document.getElementsByClassName('box-5')[0];
+        let box_6=document.getElementsByClassName('box-6')[0];
+        我的包裹.addEventListener('click',()=>{
+            box_1.classList.remove('hidden');
+            box_2.classList.add('hidden');
+            box_3.classList.add('hidden');
+            box_4.classList.add('hidden');
+            box_5.classList.add('hidden');
+            box_6.classList.add('hidden');
+        })
+        寄出包裹.addEventListener('click',()=>{
+            box_1.classList.add('hidden');
+            box_2.classList.remove('hidden');
+            box_3.classList.add('hidden');
+            box_4.classList.add('hidden');
+            box_5.classList.add('hidden');
+            box_6.classList.add('hidden');
+        })
+        快递查询.addEventListener('click',()=>{
+            box_1.classList.add('hidden');
+            box_2.classList.add('hidden');
+            box_3.classList.remove('hidden');
+            box_4.classList.add('hidden');
+            box_5.classList.add('hidden');
+            box_6.classList.add('hidden');
+        })
+        我的钱包.addEventListener('click',()=>{
+            box_1.classList.add('hidden');
+            box_2.classList.add('hidden');
+            box_3.classList.add('hidden');
+            box_4.classList.remove('hidden');
+            box_5.classList.add('hidden');
+            box_6.classList.add('hidden');
+        })
+        我的账户.addEventListener('click',()=>{
+            box_1.classList.add('hidden');
+            box_2.classList.add('hidden');
+            box_3.classList.add('hidden');
+            box_4.classList.add('hidden');
+            box_5.classList.remove('hidden');
+            box_6.classList.add('hidden');
+        })
+        密码修改.addEventListener('click',()=>{
+            box_1.classList.add('hidden');
+            box_2.classList.add('hidden');
+            box_3.classList.add('hidden');
+            box_4.classList.add('hidden');
+            box_5.classList.add('hidden');
+            box_6.classList.remove('hidden');
+        })
+        let loding=document.getElementById('loding');
+        let form_box_2=document.getElementsByClassName('form-box-2')[0];
+        let left=document.getElementsByClassName('left')[0];
+        let right=document.getElementsByClassName('right')[0];
+        loding.addEventListener('click',()=>{
+            form_box_1.classList.add('hidden')
+            register_box.classList.add('hidden');
+            login_box.classList.add('hidden');
+            left.classList.add('hidden');
+            right.classList.add('hidden');
+            form_box_2.classList.remove('hidden')
+
+        })
+    </script>
+</body>
+</html>

@@ -98,15 +98,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DataManager.cpp" />
+    <ClCompile Include="etFx.cpp" />
     <ClCompile Include="jsoncpp.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pkg.cpp" />
+    <ClCompile Include="user.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataManager.h" />
     <ClInclude Include="etFx.h" />
     <ClInclude Include="httplib.h" />
     <ClInclude Include="json\json-forwards.h" />
     <ClInclude Include="json\json.h" />
+    <ClInclude Include="pkg.h" />
     <ClInclude Include="strCoder.h" />
+    <ClInclude Include="user.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="webpages\1.jpg" />
+    <Image Include="webpages\2.jpg" />
+    <Image Include="webpages\3.png" />
+    <Image Include="webpages\4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="webpages\index.css" />
+    <None Include="webpages\index.html" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
