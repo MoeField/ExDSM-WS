@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <fstream>
 #include <string>
 
@@ -17,9 +18,6 @@ using namespace std;
 class DataManager
 {
 private:
-	fstream UsrFile;
-	fstream PkgFile;
-
 	vector<User> users;
 	map<string, int> UsrMap;
 
@@ -29,6 +27,12 @@ private:
 	map<string, vector<int> > PkgToMap;
 
 public:
+	fstream UsrFile;
+	fstream PkgFile;
+
+	DataManager();
+	DataManager(string, string);
+	~DataManager();
 	int setUsrFile(string);
 	int setPkgFile(string);
 
