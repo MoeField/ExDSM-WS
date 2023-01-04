@@ -33,7 +33,6 @@ int DataManager::setUsrFile(string name) {
 		}
 	}
 	else{
-		//UsrFile.close(); UsrFile.clear();
 		cout << "usrFileNotFound,CreatNewOne." << endl;
 		UsrFile.open(name, ios::out | ios::binary);
 		UsrFile.close(); UsrFile.clear();
@@ -51,60 +50,49 @@ int DataManager::setPkgFile(string name) {
 		Package tmp;
 		PkgFile.seekg(0);
 		while (!PkgFile.eof() && PkgFile.peek() != EOF) {
-			PkgFile.read((char*)&tmp, sizeof(User));
+			PkgFile.read((char*)&tmp, sizeof(Package));
 			packages.push_back(tmp);
 			int n = packages.size() - 1;//vector下标从0开始
-			PkgMap[tmp.UUID].push_back(n);
+			PkgMap[tmp.UUID] = n;
 			PkgFromMap[tmp.from].push_back(n);
 			PkgToMap[tmp.to].push_back(n);
 		}
 	}
 	else{
-		//UsrFile.close(); UsrFile.clear();
 		cout << "pkgFileNotFound,CreatNewOne." << endl;
 		PkgFile.open(name, ios::out | ios::binary);
 		PkgFile.close();PkgFile.clear();
 		PkgFile.open(name, ios::in | ios::out | ios::binary);
 	}
 
-
-
 	PkgFile.seekg(0);
 	if (!PkgFile) { return -1; }
 	return 0;
 }
 
-int DataManager::checkExist(string usrName) {
+int DataManager::checkExistUsr(string usrName) {
 	if (!UsrFile) { return -1; 	}
 	map<string, int>::iterator iter;
 	iter = UsrMap.find(usrName);
-	if (iter == UsrMap.end()) {
-		return -404;
-	}
-	else {
-		return UsrMap[usrName];
-	}
+	if (iter == UsrMap.end()) { return -404; }
+	else { return UsrMap[usrName]; }
 }
 
 int DataManager::verifyUsr(string usrName, string pwd) {
 	if (!UsrFile) { return -1; }
-	int id = checkExist(usrName);
-	if (id < 0) {
-		return -404;
-	}
+	int id = checkExistUsr(usrName);
+	if (id < 0) { return -404; }
 	else {
-		if (pwd == string(users[id].userName)) {//需验证
+		if (strcmp(users[id].password, pwd.c_str()) == 0) {//需验证
 			return 0;
 		}
-		else {
-			return -403;
-		}
+		else { return -403; }
 	}
 }
 
 int DataManager::addUsr(User& tmp) {
 	if (!UsrFile) { return -1; }
-	int id = checkExist(tmp.userName);
+	int id = checkExistUsr(tmp.userName);
 	if (id != -404) {
 		return -2;
 	}
@@ -124,12 +112,43 @@ int DataManager::charge(double amount) {
 	return 0;
 }
 
+//包裹
+int DataManager::checkExistPkg(string uuid) {
+	if (!PkgFile) { return -1; }
+	map<string, int>::iterator iter;
+	iter = PkgMap.find(uuid);
+	if (iter == PkgMap.end()) {	return -404; }
+	else { return PkgMap[uuid]; }
+}
 
-
-int DataManager::addPkg() {
+int DataManager::_addPkg(Package& tmp) {
+	if (!PkgFile||!UsrFile) { return -1; }
+	int id = checkExistPkg(tmp.UUID);
+	if (id != -404) {
+		return -2;
+	}
+	packages.push_back(tmp);
+	int n = packages.size() - 1;//vector下标从0开始
+	PkgMap[tmp.UUID] = n;
+	PkgFromMap[tmp.from].push_back(n);
+	PkgToMap[tmp.to].push_back(n);
+	PkgFile.seekp(0, ios::end);
+	PkgFile.write((char*)&tmp, sizeof(Package));
 	return 0;
 }
 
-int DataManager::receiptPkg() {
+int DataManager::addPkg(User& f, User& t, double amount, int type, string d) {
+	if (!PkgFile || !UsrFile) { return -1; }
+	if (f.AccBalance < amount * type) { return -402; }//没钱
+	else {
+		f.AccBalance -= amount * type;
+		UsrFile.seekp(UsrMap[f.userName] * sizeof(User));
+
+		_addPkg(Package(f, t, type, d));
+	}
+}
+
+int DataManager::receiptPkg(string pkgUid) {
+
 	return 0;
 }

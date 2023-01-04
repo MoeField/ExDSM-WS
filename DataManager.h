@@ -15,20 +15,13 @@
 
 using namespace std;
 
-class DataManager
-{
-private:
-	vector<User> users;
-	map<string, int> UsrMap;
-
-	vector<Package> packages;
-	map<string, vector<int> > PkgMap;
-	map<string, vector<int> > PkgFromMap;
-	map<string, vector<int> > PkgToMap;
-
+class DataManager{
 public:
 	fstream UsrFile;
 	fstream PkgFile;
+
+	vector<User> users;
+	vector<Package> packages;
 
 	DataManager();
 	DataManager(string, string);
@@ -36,16 +29,22 @@ public:
 	int setUsrFile(string);
 	int setPkgFile(string);
 
-	int checkExist(string);
+	int checkExistUsr(string);
+	int checkExistPkg(string);
+
 	int verifyUsr(string, string);
 	
 	int addUsr(User&);
 	int charge(double);
 
+	int _addPkg(Package&);
+	int addPkg(User&, User&, double, int, string);
 
-
-	int addPkg();
-	int receiptPkg();
-
+	int receiptPkg(string);//uuid
+private:
+	map<string, int> UsrMap;
+	map<string, int> PkgMap;
+	map<string, vector<int> > PkgFromMap;
+	map<string, vector<int> > PkgToMap;
 };
 
