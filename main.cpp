@@ -313,16 +313,18 @@ void adminLogin(const Request& req, Response& rsp) {
 	else { rsp.status = 401; }
 }
 
-void adminChangePwd(const Request& req, Response& rsp) {
+void adminBallance(const Request& req, Response& rsp) {
 	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	//处理请求
-	string pwd, nPwd;
+	string pwd;
 	pwd = UrlDecode(req.get_param_value("password").c_str());
-	nPwd = UrlDecode(req.get_param_value("newPassword").c_str());
+	Json::Value j;
 	if (strcmp(pwd.c_str(), Manager.admin.pwd) == 0) {
-		int res = Manager.changePwd("admin", nPwd);
-		if (res == 0) { rsp.status = 200; }
-		else { rsp.status = 400; }
+		j["ballance"] = Manager.admin.ballance;
+		string res = j.toStyledString();
+		rsp.set_header("Content-Type", "application/json;charset=UTF-8");
+		rsp.set_content(res, "application/json;charset=UTF-8");
+		rsp.status = 200;
 	}
 	else { rsp.status = 401; }
 }
@@ -354,6 +356,20 @@ void adminGetPkgData(const Request& req, Response& rsp) {
 		rsp.status = 200;
 	}
 	else { rsp.status = 403; }
+}
+
+void adminChangePwd(const Request& req, Response& rsp) {
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
+	//处理请求
+	string pwd, nPwd;
+	pwd = UrlDecode(req.get_param_value("password").c_str());
+	nPwd = UrlDecode(req.get_param_value("newPassword").c_str());
+	if (strcmp(pwd.c_str(), Manager.admin.pwd) == 0) {
+		int res = Manager.changePwd("admin", nPwd);
+		if (res == 0) { rsp.status = 200; }
+		else { rsp.status = 400; }
+	}
+	else { rsp.status = 401; }
 }
 
 //-------------------------------------------------------------------------------------------------------------------------
@@ -406,11 +422,10 @@ int main() {
 
 	//adminApi
 	svr.Post("/adminApi/adminLogin", adminLogin);
-	svr.Post("/adminApi/adminChangePwd", adminChangePwd);
 	svr.Post("/adminApi/adminGetUsrData", adminGetUsrData);
 	svr.Post("/adminApi/adminGetPkgData", adminGetPkgData);
 	svr.Post("/adminApi/checkPkgInUid", checkPkgInUid);
-
+	svr.Post("/adminApi/adminChangePwd", adminChangePwd);
 
 	//异常处理
 	svr.set_exception_handler([](const auto& req, auto& res, std::exception_ptr ep) {
