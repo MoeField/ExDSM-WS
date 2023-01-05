@@ -16,28 +16,40 @@
 
 using namespace std;
 
+class Admin {
+public:
+	char pwd[17];
+	double ballance;
+};
+
 class DataManager{
 public:
 	fstream UsrFile;
 	fstream PkgFile;
+	fstream AdminFile;
 
+	Admin admin;
 	vector<User> users;
 	vector<Package> packages;
 
 	DataManager();
 	DataManager(string, string);
 	~DataManager();
+
 	int setUsrFile(string);
 	int setPkgFile(string);
+	int setAdminFile(string);
 
 	int checkExistUsr(string);
 	int checkExistPkg(string);
 
 	int verifyUsr(string, string);
-	
+	int changePwd(string,string);
+
 	int addUsr(User&);
 	int charge(string,double);
-	Json::Value getUsrData(string, int);
+
+	Json::Value getUsrData(string);
 
 	int _addPkg(Package&);
 	int addPkg(User&, User&, double, int, string);

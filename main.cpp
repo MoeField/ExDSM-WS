@@ -39,11 +39,11 @@ void index(const httplib::Request& req, httplib::Response& rsp) {
 
 //api
 void login(const Request& req, Response& rsp) {
-	cout << "httplib server recv a req:" << req.path << "\t" << req.body.c_str() << endl;
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	//处理请求
 	string usrName, pwd;
-	usrName = req.get_param_value("usrName").c_str();
-	pwd = req.get_param_value("password").c_str();
+	usrName = UrlDecode(req.get_param_value("usrName").c_str());
+	pwd = UrlDecode(req.get_param_value("password").c_str());
 	int id = Manager.verifyUsr(usrName, pwd);
 	
 	switch (id) {
@@ -55,36 +55,41 @@ void login(const Request& req, Response& rsp) {
 }
 
 void regist(const Request& req, Response& rsp) {
-	cout << "httplib server recv a req:" << req.path << "\t" << req.body.c_str() << endl;
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	//处理请求
 	string usrName, pwd, realName, tel, address;
-	usrName = req.get_param_value("usrName").c_str();
-	pwd = req.get_param_value("password").c_str();
-	realName = req.get_param_value("realName").c_str();
-	tel = req.get_param_value("tel").c_str();
-	address = req.get_param_value("address").c_str();
+	usrName = UrlDecode(req.get_param_value("usrName").c_str());
+	pwd = UrlDecode(req.get_param_value("password").c_str());
+	realName = UrlDecode(req.get_param_value("realName").c_str());
+	tel = UrlDecode(req.get_param_value("tel").c_str());
+	address = UrlDecode(req.get_param_value("address").c_str());
 
+	if (usrName.length() < 3 || pwd.length() < 6) {
+		rsp.status = 400;
+		return;
+	}
 	int id = Manager.checkExistUsr(usrName);
-	if (id == -404) {
+	if (id == -404) {//如果未找到同用户名的用户
 		User temp(usrName, pwd, realName, tel, address);
+		Manager.addUsr(temp);
 		rsp.status = 200;
 	}
-	else if (id == 0) {rsp.status = 403;}
-	else {rsp.status = 500;}
+	else if (id >= 0) { rsp.status = 403; }
+	else { rsp.status = 500; }
 }
 
 void sendPkg(const Request& req, Response& rsp) {
-	cout << "httplib server recv a req:" << req.path << "\t" << req.body.c_str() << endl;
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	//处理请求
 	string usrName, pwd, to, describe;
 	double amount; int type;
 
-	usrName = req.get_param_value("usrName").c_str();
-	pwd = req.get_param_value("password").c_str();
+	usrName = UrlDecode(req.get_param_value("usrName").c_str());
+	pwd = UrlDecode(req.get_param_value("password").c_str());
 	to = req.get_param_value("to").c_str();
 	string2num(req.get_param_value("type").c_str(), type);
 	string2num(req.get_param_value("amount").c_str(), amount);
-	describe = req.get_param_value("address").c_str();
+	describe = UrlDecode(req.get_param_value("address").c_str());
 
 	int id = Manager.verifyUsr(usrName, pwd);
 	if (id == 0) {
@@ -96,6 +101,7 @@ void sendPkg(const Request& req, Response& rsp) {
 		}
 		else {
 			switch (pId) {
+			case -400:rsp.status = 400; break;
 			case -402:rsp.status = 402; break;
 			case -403:rsp.status = 403; break;
 			case -404:rsp.status = 404; break;
@@ -113,10 +119,10 @@ void sendPkg(const Request& req, Response& rsp) {
 }
 
 void checkSent(const Request& req, Response& rsp) {
-	cout << "httplib server recv a req:" << req.path << "\t" << req.body.c_str() << endl;
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	string usrName, pwd;
-	usrName = req.get_param_value("usrName").c_str();
-	pwd = req.get_param_value("password").c_str();
+	usrName = UrlDecode(req.get_param_value("usrName").c_str());
+	pwd = UrlDecode(req.get_param_value("password").c_str());
 	int id = Manager.verifyUsr(usrName, pwd);
 
 	if (id == 0) {
@@ -136,10 +142,10 @@ void checkSent(const Request& req, Response& rsp) {
 }
 
 void checkRcv(const Request& req, Response& rsp) {
-	cout << "httplib server recv a req:" << req.path << "\t" << req.body.c_str() << endl;
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	string usrName, pwd;
-	usrName = req.get_param_value("usrName").c_str();
-	pwd = req.get_param_value("password").c_str();
+	usrName = UrlDecode(req.get_param_value("usrName").c_str());
+	pwd = UrlDecode(req.get_param_value("password").c_str());
 	int id = Manager.verifyUsr(usrName, pwd);
 
 	if (id == 0) {
@@ -158,12 +164,28 @@ void checkRcv(const Request& req, Response& rsp) {
 	}
 }
 
+void checkPkgInUid(const Request& req, Response& rsp) {
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
+	string uuid;
+	uuid = req.get_param_value("usrName").c_str();
+
+	int id = Manager.checkExistPkg(uuid);
+	if (id >= 0) {
+		string res = Manager.getPkgData(uuid, 'u').toStyledString();
+		//cout << res << endl;
+		rsp.set_header("Content-Type", "application/json;charset=UTF-8");
+		rsp.set_content(res, "application/json;charset=UTF-8");
+		rsp.status = 200;
+	}
+	else { rsp.status = 404; }
+}
+
 void receiption(const Request& req, Response& rsp) {
-	cout << "httplib server recv a req:" << req.path << "\t" << req.body.c_str() << endl;
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	//处理请求
 	string usrName, pwd,pkgUid;
-	usrName = req.get_param_value("usrName").c_str();
-	pwd = req.get_param_value("password").c_str();
+	usrName = UrlDecode(req.get_param_value("usrName").c_str());
+	pwd = UrlDecode(req.get_param_value("password").c_str());
 	pkgUid= req.get_param_value("uuid").c_str();
 
 	int id = Manager.verifyUsr(usrName, pwd);
@@ -187,12 +209,12 @@ void receiption(const Request& req, Response& rsp) {
 }
 
 void charge(const Request& req, Response& rsp) {
-	cout << "httplib server recv a req:" << req.path << "\t" << req.body.c_str() << endl;
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	//处理请求
 	string usrName, pwd;
 	double amount;
-	usrName = req.get_param_value("usrName").c_str();
-	pwd = req.get_param_value("password").c_str();
+	usrName = UrlDecode(req.get_param_value("usrName").c_str());
+	pwd = UrlDecode(req.get_param_value("password").c_str());
 	string2num(req.get_param_value("amount").c_str(),amount);
 	int id = Manager.verifyUsr(usrName, pwd);
 	if (id == 0) {
@@ -211,16 +233,16 @@ void charge(const Request& req, Response& rsp) {
 }
 
 void getBallance(const Request& req, Response& rsp) {
-	cout << "httplib server recv a req:" << req.path << "\t" << req.body.c_str() << endl;
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	//处理请求
 	string usrName, pwd;
-	usrName = req.get_param_value("usrName").c_str();
-	pwd = req.get_param_value("password").c_str();
+	usrName = UrlDecode(req.get_param_value("usrName").c_str());
+	pwd = UrlDecode(req.get_param_value("password").c_str());
 	int id = Manager.verifyUsr(usrName, pwd);
 	Json::Value j;
 	if (id == 0) {
 		int seq = Manager.checkExistUsr(usrName);
-		j["amount"] = Manager.users[seq].AccBalance;
+		j["ballance"] = Manager.users[seq].AccBalance;
 	}
 	string res = j.toStyledString();
 
@@ -235,22 +257,17 @@ void getBallance(const Request& req, Response& rsp) {
 }
 
 void changePwd(const Request& req, Response& rsp) {
-	cout << "httplib server recv a req:" << req.path << "\t" << req.body.c_str() << endl;
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	//处理请求
 	string usrName, pwd, newPwd;
-	usrName = req.get_param_value("usrName").c_str();
-	pwd = req.get_param_value("password").c_str();
-	newPwd= req.get_param_value("newPassword").c_str();
+	usrName = UrlDecode(req.get_param_value("usrName").c_str());
+	pwd = UrlDecode(req.get_param_value("password").c_str());
+	newPwd = UrlDecode(req.get_param_value("newPassword").c_str());
 	int id = Manager.verifyUsr(usrName, pwd);
 	if (id == 0) {
-		int seq = Manager.checkExistUsr(usrName);
-		int res = Manager.users[seq].changePwd(newPwd);
-		if (res == 0) {
-			rsp.status = 200;
-		}
-		else {
-			rsp.status = 400;
-		}
+		int res = Manager.changePwd(usrName, newPwd);
+		if (res == 0) { rsp.status = 200; }
+		else { rsp.status = 400; }
 	}
 	else {
 		switch (id) {
@@ -262,15 +279,15 @@ void changePwd(const Request& req, Response& rsp) {
 }
 
 void getUsrData(const Request& req, Response& rsp) {
-	cout << "httplib server recv a req:" << req.path << "\t" << req.body.c_str() << endl;
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	//处理请求
 	string usrName, pwd;
-	usrName = req.get_param_value("usrName").c_str();
-	pwd = req.get_param_value("password").c_str();
+	usrName = UrlDecode(req.get_param_value("usrName").c_str());
+	pwd = UrlDecode(req.get_param_value("password").c_str());
 	int id = Manager.verifyUsr(usrName, pwd);
 	string res;
 	if (id == 0) {
-		res=Manager.getUsrData(usrName,0).toStyledString();
+		res=Manager.getUsrData(usrName).toStyledString();
 	}
 	rsp.set_header("Content-Type", "application/json;charset=UTF-8");
 	rsp.set_content(res, "application/json;charset=UTF-8");
@@ -283,8 +300,63 @@ void getUsrData(const Request& req, Response& rsp) {
 	}
 }
 
+//adminApi
+void adminLogin(const Request& req, Response& rsp) {
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
+	//处理请求
+	string pwd;
+	pwd = UrlDecode(req.get_param_value("password").c_str());
+	if (strcmp(pwd.c_str(), Manager.admin.pwd) == 0) {
+		rsp.status = 200;
+	}
+	else { rsp.status = 401; }
+}
 
-//#include "getRT.h"
+void adminChangePwd(const Request& req, Response& rsp) {
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode( req.body.c_str() ) << endl;
+	//处理请求
+	string pwd, nPwd;
+	pwd = UrlDecode(req.get_param_value("password").c_str());
+	nPwd = UrlDecode(req.get_param_value("newPassword").c_str());
+	if (strcmp(pwd.c_str(), Manager.admin.pwd) == 0) {
+		int res = Manager.changePwd("admin", nPwd);
+		if (res == 0) { rsp.status = 200; }
+		else { rsp.status = 400; }
+	}
+	else { rsp.status = 401; }
+}
+
+void adminGetUsrData(const Request& req, Response& rsp) {
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
+	//处理请求
+	string pwd;
+	pwd = UrlDecode(req.get_param_value("password").c_str());
+	string res;
+	if (strcmp(pwd.c_str(), Manager.admin.pwd) == 0) {
+		res = Manager.getUsrData("admin").toStyledString();
+		rsp.set_header("Content-Type", "application/json;charset=UTF-8");
+		rsp.set_content(res, "application/json;charset=UTF-8");
+		rsp.status = 200;
+	}
+	else { rsp.status = 403; }
+}
+
+void adminGetPkgData(const Request& req, Response& rsp) {
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
+	string pwd;
+	pwd = UrlDecode(req.get_param_value("password").c_str());
+	string res;
+	if (strcmp(pwd.c_str(), Manager.admin.pwd) == 0) {
+		res = Manager.getPkgData("admin",'a').toStyledString();
+		rsp.set_header("Content-Type", "application/json;charset=UTF-8");
+		rsp.set_content(res, "application/json;charset=UTF-8");
+		rsp.status = 200;
+	}
+	else { rsp.status = 403; }
+}
+
+//-------------------------------------------------------------------------------------------------------------------------
+
 int main() {
 	//编码调整为utf-8
 	SetConsoleOutputCP(65001);
@@ -298,50 +370,11 @@ int main() {
 	}
 	//数据管理器初始化
 	
-	int uFileGood = Manager.setUsrFile("./data/usr.dat");
-	int pFileGood = Manager.setPkgFile("./data/pkg.dat");
+	Manager.setUsrFile("./data/usr.dat");
+	Manager.setPkgFile("./data/pkg.dat");
+	Manager.setAdminFile("./data/admin.dat");
 
-	if (uFileGood + pFileGood < 0) {
-		cerr << "FILE ERROR" << endl;
-		return -1;
-	}
 	cout << u8"DataBase Found.\n" << endl;
-/*
-	//测试
-	User test0(
-		u8"Xiaoming",
-		u8"QWER1234asdf",
-		u8"李小明",
-		u8"+86 13000000000",
-		u8"北京市海淀区信息路48"
-	);
-
-	User test1(
-		u8"MIKOTTO",
-		u8"ONLYmyRailGun",
-		u8"御坂美琴",
-		u8"+86 15000000000",
-		u8"日本 学园都市"
-	);
-
-	cout << u8"Ret:AddUsr 下标（-2表示已存在）：" << Manager.addUsr(test0) << endl;
-	cout << u8"Ret:AddUsr 下标（-2表示已存在）：" << Manager.addUsr(test1) << endl;
-
-	cout << u8"UserFound 下标：" << Manager.checkExistUsr("Xiaoming") << endl;
-	cout << u8"UserFound 下标：" << Manager.checkExistUsr("MIKOTTO") << endl;
-	cout << u8"UserFound 下标：" << Manager.checkExistUsr("0721") << endl;
-
-	cout << u8"UserVerify ：" << Manager.verifyUsr("MIKOTTO", "ONLYmyRailGun")<<endl;
-	cout << u8"UserVerify ：" << Manager.verifyUsr("Xiaoming", "ONLYmyRailGun") << endl;
-	cout << u8"UserVerify ：" << Manager.verifyUsr("Xiaoming", "QWER1234asdf") << endl;
-	cout << u8"UserVerify ：" << Manager.verifyUsr("rrr", "xxx") << endl;
-
-
-	for (int i = 0; i < 10; i++) {
-		Package pk0(Manager.users[0], Manager.users[1], 1, "testpkg");
-		cout << u8"Ret:AddPkg 下标（-2表示已存在）：" << Manager._addPkg(pk0) << endl;
-	}
-*/
 
 	//http server配置
 	if (_access("./webpages", 0) != 0) 
@@ -358,6 +391,7 @@ int main() {
 
 	svr.Post("/api/sendPkg", sendPkg);
 	svr.Post("/api/checkSent", checkSent);
+	svr.Post("/api/checkPkgInUid", checkPkgInUid);
 	svr.Post("/api/receiption", receiption);
 	svr.Post("/api/checkRcv", checkRcv);
 
@@ -366,6 +400,12 @@ int main() {
 	svr.Post("/api/changePwd", changePwd);
 	svr.Post("/api/getUsrData", getUsrData);
 
+	//adminApi
+	svr.Post("/adminApi/adminLogin", adminLogin);
+	svr.Post("/adminApi/adminChangePwd", adminChangePwd);
+	svr.Post("/adminApi/adminGetUsrData", adminGetUsrData);
+	svr.Post("/adminApi/adminGetPkgData", adminGetPkgData);
+	svr.Post("/adminApi/checkPkgInUid", checkPkgInUid);
 
 
 	//异常处理
@@ -387,4 +427,4 @@ int main() {
 	system("pause");
 	return 0;
 }
-//-------------------------------------------------------------------------------------------------------------------------
+

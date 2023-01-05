@@ -1,196 +1,286 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
-    <meta charset="utf-8" name="author" content="阮立坤&苏年祥">
-    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-    <title>魔幻的整活界面</title>
-    <link rel="stylesheet" href="index.css">
+    <meta charset="utf-8" name="author" content="阮立坤&苏年祥" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>用户界面</title>
+    <!-- <link rel="stylesheet" href="index.css">  -->
+
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
+
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="form-box-1">
-            <div class="register-box hidden" >
+            <div class="register-box hidden">
                 <h1>register</h1>
-                <input type="text" placeholder="用户名">
-                <input type="text" placeholder="姓名">
-                <input type="password" placeholder="密码">
-                <input type="tel" placeholder="电话">
-                <input type="text" placeholder="地址">
-                <button>注册</button>
+                <form id="register">
+                    <input type="text" placeholder="用户名" id="reg_UsrName"><br>
+                    <input type="text" placeholder="姓名" id="reg_RealName"><br>
+                    <input type="password" placeholder="密码" id="reg_pwd"><br>
+                    <input type="tel" placeholder="电话" id="reg_tel"><br>
+                    <input type="text" placeholder="地址" id="reg_address"><br>
+                </form>
+                <button id="regButton">注册</button>
             </div>
-            <div class="login-box"  >
+
+            <div class="login-box">
                 <h1>login</h1>
-                <input type="text" placeholder="用户名">
-                <input type="password" placeholder="密码">
-                <button id="loding">登录</button>
+                <form id="login">
+                    <input type="text" placeholder="用户名" id="login_UsrName"><br>
+                    <input type="password" placeholder="密码" id="login_pwd"><br>
+                </form>
+                <button id="loginButton">登录</button>
+
             </div>
         </div>
+
         <div class="con-box left ">
-            <h2>欢迎来到<span>魔幻商城</span></h2>
+            <h2>欢迎</h2>
             <p>准备开始<span>整活</span></p>
-            <img src="4.jpg" alt=" ">
-            <p>已有账号</p>
-            <button id="login">去登录</button>
+            <p>已有账号？</p>
+            <button id="tab_login">去登录</button>
         </div>
         <div class="con-box right">
-            <h2>欢迎来到<span>魔幻商城</span></h2>
+            <h2>欢迎</span></h2>
             <p>速速开始<span>整活</span></p>
-            <img src="3.png" alt=" ">
             <p>没有账号？</p>
-            <button id="register">去注册</button>
-        </div> 
+            <button id="tab_register">去注册</button>
+        </div>
+        <hr>
+
         <div class="form-box-2 hidden">
-            <div class="first " >
+            <div class="first">
                 <button id="我的包裹">我的包裹</button>
             </div>
-            <div class="second"  >
+            <div class="second">
                 <button id="寄出包裹">寄出包裹</button>
             </div>
-            <div class="third" >
+            <div class="third">
                 <button id="快递查询">快递查询</button>
             </div>
-            <div class="forth" >
+            <div class="forth">
                 <button id="我的钱包">我的钱包</button>
             </div>
-            <div class="fifth" >
+            <div class="fifth">
                 <button id="我的账户">我的账户</button>
             </div>
-            <div class="sixth"  >
+            <div class="sixth">
                 <button id="密码修改">密码修改</button>
             </div>
         </div>
+
         <div class="box box-1 hidden">
             <h2>我的包裹</h2>
+            <form id="receiption">
+                <input type="text" placeholder="订单编号" id="uuid"><br>
+            </form>
             <button>确认收货</button>
-            <button>未收到</button>
+            <ul id="RcvPkg"></ul>
         </div>
+
         <div class="box box-2 hidden">
             <h2>寄出包裹</h2>
-            <input type="text" placeholder="收件人用户名">
-            <input type="text" placeholder="包裹描述">
-            <input type="text" placeholder="包裹大小">
+            <form id="send">
+                <input type="text" placeholder="收件人用户名" id="send_rName"><br>
+                <input type="text" placeholder="包裹描述" id="send_describe"><br>
+                <input type="text" placeholder="包裹重量/图书本数" id="send_pkgWeight"><br>
+                <input type="range" placeholder="包裹类别" min="2" step="3" max="8" id="send_pkgType"> <br>
+                图书/普通快递/易碎品<br>
+            </form>
             <button>确认发货</button>
+
+            <h2>已经寄出的包裹</h2>
+            <ul id="SentPkg"></ul>
         </div>
+
         <div class="box box-3 hidden">
             <h2>快递查询</h2>
-            <input type="text" placeholder="运单号">
+            <form id="inquirePkg">
+                <input type="text" placeholder="运单号" id="inq_uuid"><br>
+            </form>
             <button>确认查询</button>
+            <ul id="InqPkg"></ul>
         </div>
+
         <div class="box box-4 hidden">
             <h2>我的钱包</h2>
-            <input type="text" placeholder="输入充值金额">
+            <h4>余额</h4>
+            <ul id="ballance"></ul><br>
+
+            <form id="charge">
+                <input type="text" placeholder="输入充值金额" id="charge_amount"><br>
+            </form>
             <button>确认充值</button>
-            <input type="password" placeholder="输入密码">
-            <button>确认查询</button>
+
         </div>
         <div class="box box-5 hidden">
-            <h2>我的账户</h2>
-            <label>用户名:</label>
-            <input type="text">
-            <label>姓名:</label>
-            <input type="text">
-            <label>电话:</label>
-            <input type="tel">
-            <label>地址:</label>
-            <input type="text">
-            <button>确认修改</button>
+            <h2>账户信息</h2>
+            <ul id="accData"></ul><br>
         </div>
         <div class="box box-6 hidden">
             <h2>密码修改</h2>
-            <input type="password" placeholder="新的密码">
-            <input type="password" placeholder="确认密码">
+            <form id="changePwd">
+                <input type="password" placeholder="新的密码" id="nPwd"><br>
+                <input type="password" placeholder="确认密码" id="nPwd_rpt"><br>
+            </form>
             <button>确认修改</button>
         </div>
-    </div>    
-    <script>
-        let login=document.getElementById('login');
-        let register=document.getElementById('register');
-        let form_box_1=document.getElementsByClassName('form-box-1')[0];
-        let register_box=document.getElementsByClassName('register-box')[0];
-        let login_box=document.getElementsByClassName('login-box')[0];
-        register.addEventListener('click',()=>{
-            form_box_1.style.transform='translateX(80%)';
-            login_box.classList.add('hidden');
-            register_box.classList.remove('hidden');
-        })
-        login.addEventListener('click',()=>{
-            form_box_1.style.transform='translateX(0%)';
-            register_box.classList.add('hidden');
-            login_box.classList.remove('hidden');
-        })
-        let 我的包裹=document.getElementById('我的包裹');
-        let 寄出包裹=document.getElementById('寄出包裹');
-        let 快递查询=document.getElementById('快递查询');
-        let 我的钱包=document.getElementById('我的钱包');
-        let 我的账户=document.getElementById('我的账户');
-        let 密码修改=document.getElementById('密码修改');
-        let box_1=document.getElementsByClassName('box-1')[0];
-        let box_2=document.getElementsByClassName('box-2')[0];
-        let box_3=document.getElementsByClassName('box-3')[0];
-        let box_4=document.getElementsByClassName('box-4')[0];
-        let box_5=document.getElementsByClassName('box-5')[0];
-        let box_6=document.getElementsByClassName('box-6')[0];
-        我的包裹.addEventListener('click',()=>{
-            box_1.classList.remove('hidden');
-            box_2.classList.add('hidden');
-            box_3.classList.add('hidden');
-            box_4.classList.add('hidden');
-            box_5.classList.add('hidden');
-            box_6.classList.add('hidden');
-        })
-        寄出包裹.addEventListener('click',()=>{
-            box_1.classList.add('hidden');
-            box_2.classList.remove('hidden');
-            box_3.classList.add('hidden');
-            box_4.classList.add('hidden');
-            box_5.classList.add('hidden');
-            box_6.classList.add('hidden');
-        })
-        快递查询.addEventListener('click',()=>{
-            box_1.classList.add('hidden');
-            box_2.classList.add('hidden');
-            box_3.classList.remove('hidden');
-            box_4.classList.add('hidden');
-            box_5.classList.add('hidden');
-            box_6.classList.add('hidden');
-        })
-        我的钱包.addEventListener('click',()=>{
-            box_1.classList.add('hidden');
-            box_2.classList.add('hidden');
-            box_3.classList.add('hidden');
-            box_4.classList.remove('hidden');
-            box_5.classList.add('hidden');
-            box_6.classList.add('hidden');
-        })
-        我的账户.addEventListener('click',()=>{
-            box_1.classList.add('hidden');
-            box_2.classList.add('hidden');
-            box_3.classList.add('hidden');
-            box_4.classList.add('hidden');
-            box_5.classList.remove('hidden');
-            box_6.classList.add('hidden');
-        })
-        密码修改.addEventListener('click',()=>{
-            box_1.classList.add('hidden');
-            box_2.classList.add('hidden');
-            box_3.classList.add('hidden');
-            box_4.classList.add('hidden');
-            box_5.classList.add('hidden');
-            box_6.classList.remove('hidden');
-        })
-        let loding=document.getElementById('loding');
-        let form_box_2=document.getElementsByClassName('form-box-2')[0];
-        let left=document.getElementsByClassName('left')[0];
-        let right=document.getElementsByClassName('right')[0];
-        loding.addEventListener('click',()=>{
-            form_box_1.classList.add('hidden')
-            register_box.classList.add('hidden');
-            login_box.classList.add('hidden');
-            left.classList.add('hidden');
-            right.classList.add('hidden');
-            form_box_2.classList.remove('hidden')
+    </div>
 
-        })
+    <script type="text/javascript">
+        $("#regButton").on("click", function () {
+            var UsrName = $("#register input:eq(0)").val();
+            var RealName = $("#register input:eq(1)").val();
+            var pwd = $("#register input:eq(2)").val();
+            var tel = $("#register input:eq(3)").val();
+            var address = $("#register input:eq(4)").val();
+            $.ajax({
+                //几个参数需要注意一下
+                type: "POST",//方法类型
+                url: "api/regist",//url
+                //dataType: "text",//预期服务器返回的数据类型[xml,html,script,json,jsonp,text]
+                data: {
+                    "usrName": UsrName,
+                    "password": pwd,
+                    "realName": RealName,
+                    "tel": tel,
+                    "address": address,
+                },
+                success: function (response, status, xhr) {
+                    console.log(response);	//服务器返回的信息
+                    console.log(status);	//服务器返回的信息
+                    console.log(xhr.status);	//状态码,   要看其他的直接 输出 xhr 就行
+                    console.log(xhr.getAllResponseHeaders()); //响应头部
+                    alert("注册成功！");
+                },
+                error: function (status, errorThrown) {
+                    console.log(status);
+                    alert("注册失败，用户名已被占用！" + errorThrown);
+                }
+            });
+            return false;
+        }),
+
+            $("#loginButton").on("click", function () {
+                var UsrName = $("#login input:eq(0)").val();
+                var pwd = $("#login input:eq(1)").val();
+
+                $.ajax({
+                    //几个参数需要注意一下
+                    type: "POST",//方法类型
+                    url: "api/login",//url
+                    //dataType: "text",//预期服务器返回的数据类型[xml,html,script,json,jsonp,text]
+                    data: {
+                        "usrName": UsrName,
+                        "password": pwd
+                    },
+                    success: function (response, status, xhr) {
+                        console.log(response);	//服务器返回的信息
+                        console.log(status);	//服务器返回的信息
+                        console.log(xhr.status);	//状态码,   要看其他的直接 输出 xhr 就行
+                        console.log(xhr.getAllResponseHeaders()); //响应头部
+                        alert("登录成功！");
+                    },
+                    error: function (status, errorThrown) {
+                        console.log(status);
+                        alert("请检查用户名或密码！" + errorThrown);
+                    }
+                });
+                return false;
+            }),
+
+            $("#我的包裹").on("click", function () {
+                var UsrName = $("#login input:eq(0)").val();
+                var pwd = $("#login input:eq(1)").val();
+                $.ajax({
+                    url: "/api/checkRcv",
+                    type: "POST",
+                    data: {
+                        "usrName": UsrName,
+                        "password": pwd
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        /*这个方法里是ajax发送请求成功之后执行的代码*/
+                        console.log(data.data);
+                        showPackageData(data.data, "#RcvPkg");//数据展示
+                    },
+                    error: function (msg) {
+                        alert("ajax连接异常：" + msg);
+                    }
+                });
+            }),
+
+            $("#寄出包裹").on("click", function () {
+                var UsrName = $("#login input:eq(0)").val();
+                var pwd = $("#login input:eq(1)").val();
+                $.ajax({
+                    url: "/api/checkSent",
+                    type: "POST",
+                    data: {
+                        "usrName": UsrName,
+                        "password": pwd
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        /*这个方法里是ajax发送请求成功之后执行的代码*/
+                        console.log(data.data);
+                        showPackageData(data.data, "#SentPkg");//数据展示
+                    },
+                    error: function (msg) {
+                        alert("ajax连接异常：" + msg);
+                    }
+                });
+            });
+
+
+        function showPackageData(data, str_where) {
+            for (let i = 0; i < data.length; i++) {
+                let strEnd = "";
+                strEnd += "<h1>" + (i + 1).toString() + "</h1>"
+                    + "<p class='firstP'><span class='title'>物流单号：</span> <span>"
+                    + data[i].UUID
+                    + "</span></p> <div class='row'>"
+                    + "<p class='title'>发件人：</p><p>"
+                    + data[i].from
+                    + "</p><p class='title'>收件人：</p><p>"
+                    + data[i].to
+                    + "</p><p class='title'>发件地址：</p><p>"
+                    + data[i].fAddr
+                    + "</p><p class='title'>收件地址：</p><p>"
+                    + data[i].tAddr
+                    + "</p><p class='title'>物品类别（2:书, 5:普通, 8:易碎）：</p><p>"
+                    + data[i].type
+                    + "</p><p class='title'>物品描述：</p><p>"
+                    + data[i].description
+                    + "</p><p class='title'>签收状态（0为未签收，1为已签收）：</p><p>"
+                    + data[i].status
+                    + "</p><p class='title'>发件时间：</p><p>"
+                    + data[i].sendTime
+                    + "</p><p class='title'>收件时间：</p><p>"
+                    + data[i].rcvTime
+                    + "</p> </div> ";
+                //追加到div中
+            }
+            if (i != data.length - 1) {
+                strEnd += "<hr class='hr'/>";
+            }
+            $(str_where).append(strEnd);
+        }
+
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) { return pair[1]; }
+            }
+            return (false);
+        }
+
     </script>
 </body>
+
 </html>

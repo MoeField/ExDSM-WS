@@ -20,6 +20,7 @@ Package::Package() {
 Package::Package(User& fromUsr, User& toUsr, int t, std::string describe) {
 	status = 0;
 	type = t;
+
 	strcpy_s(from, 32, fromUsr.userName);
 	strcpy_s(fAddress, 256, fromUsr.address);
 
@@ -54,6 +55,7 @@ int Package::pack(User& fromUsr, User& toUsr, int t, std::string describe) {
 int Package::receiption() {
 	if (status == 0) {
 		status = 1;
+		strcpy_s(rcvTime, 20, getRT().c_str());
 		return 0;
 	}
 	else { return -1; }
