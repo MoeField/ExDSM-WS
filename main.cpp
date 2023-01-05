@@ -45,7 +45,7 @@ void login(const Request& req, Response& rsp) {
 	usrName = UrlDecode(req.get_param_value("usrName").c_str());
 	pwd = UrlDecode(req.get_param_value("password").c_str());
 	int id = Manager.verifyUsr(usrName, pwd);
-	
+
 	switch (id) {
 	case 0:rsp.status = 200; break;
 	case -403:rsp.status = 403; break;
@@ -89,7 +89,7 @@ void sendPkg(const Request& req, Response& rsp) {
 	to = req.get_param_value("to").c_str();
 	string2num(req.get_param_value("type").c_str(), type);
 	string2num(req.get_param_value("amount").c_str(), amount);
-	describe = UrlDecode(req.get_param_value("address").c_str());
+	describe = UrlDecode(req.get_param_value("describe").c_str());
 
 	int id = Manager.verifyUsr(usrName, pwd);
 	if (id == 0) {
@@ -183,13 +183,13 @@ void checkPkgInUid(const Request& req, Response& rsp) {
 void receiption(const Request& req, Response& rsp) {
 	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	//处理请求
-	string usrName, pwd,pkgUid;
+	string usrName, pwd, pkgUid;
 	usrName = UrlDecode(req.get_param_value("usrName").c_str());
 	pwd = UrlDecode(req.get_param_value("password").c_str());
-	pkgUid= req.get_param_value("uuid").c_str();
+	pkgUid = req.get_param_value("uuid").c_str();
 
 	int id = Manager.verifyUsr(usrName, pwd);
-	if(id==0){
+	if (id == 0) {
 		int st = Manager.receiptPkg(usrName, pkgUid);
 		switch (st) {
 		case 0:rsp.status = 200; break;
@@ -215,11 +215,12 @@ void charge(const Request& req, Response& rsp) {
 	double amount;
 	usrName = UrlDecode(req.get_param_value("usrName").c_str());
 	pwd = UrlDecode(req.get_param_value("password").c_str());
-	string2num(req.get_param_value("amount").c_str(),amount);
+	string2num(req.get_param_value("amount").c_str(), amount);
+	cout << amount << endl;
 	int id = Manager.verifyUsr(usrName, pwd);
+	cout << id << endl;
 	if (id == 0) {
-		int seq = Manager.checkExistUsr(usrName);
-		int res = Manager.users[seq].charge(amount);
+		int res = Manager.charge(usrName, amount);
 		if (res == 0) { rsp.status = 200; }
 		else { rsp.status = 403; }
 	}
@@ -287,7 +288,7 @@ void getUsrData(const Request& req, Response& rsp) {
 	int id = Manager.verifyUsr(usrName, pwd);
 	string res;
 	if (id == 0) {
-		res=Manager.getUsrData(usrName).toStyledString();
+		res = Manager.getUsrData(usrName).toStyledString();
 	}
 	rsp.set_header("Content-Type", "application/json;charset=UTF-8");
 	rsp.set_content(res, "application/json;charset=UTF-8");
@@ -313,7 +314,7 @@ void adminLogin(const Request& req, Response& rsp) {
 }
 
 void adminChangePwd(const Request& req, Response& rsp) {
-	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode( req.body.c_str() ) << endl;
+	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	//处理请求
 	string pwd, nPwd;
 	pwd = UrlDecode(req.get_param_value("password").c_str());
@@ -347,7 +348,7 @@ void adminGetPkgData(const Request& req, Response& rsp) {
 	pwd = UrlDecode(req.get_param_value("password").c_str());
 	string res;
 	if (strcmp(pwd.c_str(), Manager.admin.pwd) == 0) {
-		res = Manager.getPkgData("admin",'a').toStyledString();
+		res = Manager.getPkgData("admin", 'a').toStyledString();
 		rsp.set_header("Content-Type", "application/json;charset=UTF-8");
 		rsp.set_content(res, "application/json;charset=UTF-8");
 		rsp.status = 200;
@@ -364,12 +365,12 @@ int main() {
 	//数据存储路径检测
 	if (_access("./data", 0) != 0) {
 		cout << "Data Path Not Exist, Try Creat New One." << endl;
-		if (_mkdir("./data")){
+		if (_mkdir("./data")) {
 			cerr << u8"DATA PATH ERROR!\t" << endl;
 		}
 	}
 	//数据管理器初始化
-	
+
 	Manager.setUsrFile("./data/usr.dat");
 	Manager.setPkgFile("./data/pkg.dat");
 	Manager.setAdminFile("./data/admin.dat");
@@ -377,12 +378,15 @@ int main() {
 	cout << u8"DataBase Found.\n" << endl;
 
 	//http server配置
-	if (_access("./webpages", 0) != 0) 
-		{cerr << u8"网页文件缺失\t" << endl;}
+	if (_access("./webpages", 0) != 0)
+	{
+		cerr << u8"网页文件缺失\t" << endl;
+	}
 	//网页服务端初始化
 	Server svr;
 	svr.set_base_dir("./webpages");
 	//网页服务
+	svr.Get("/", index);
 	svr.Get("/index", index);
 
 	//Api服务
@@ -411,13 +415,13 @@ int main() {
 	//异常处理
 	svr.set_exception_handler([](const auto& req, auto& res, std::exception_ptr ep) {
 		auto fmt = "<h1>Error 500</h1><p>%s</p>";
-		char buf[BUFSIZ];
-		try { std::rethrow_exception(ep); }
-		catch (std::exception& e) { snprintf(buf, sizeof(buf), fmt, e.what()); }
-		catch (...) { snprintf(buf, sizeof(buf), fmt, "Unknown Exception"); }// See the following NOTE
-		res.set_content(buf, "text/html");
-		res.status = 500;
-	});
+	char buf[BUFSIZ];
+	try { std::rethrow_exception(ep); }
+	catch (std::exception& e) { snprintf(buf, sizeof(buf), fmt, e.what()); }
+	catch (...) { snprintf(buf, sizeof(buf), fmt, "Unknown Exception"); }// See the following NOTE
+	res.set_content(buf, "text/html");
+	res.status = 500;
+		});
 
 	//挂载
 	//svr.set_mount_point("/", "./webpages");

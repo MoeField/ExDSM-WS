@@ -18,11 +18,15 @@ using namespace std;
 
 class Admin {
 public:
+	Admin() {
+		ballance = 0;
+		strcpy_s(pwd, 17, "");
+	}
 	char pwd[17];
 	double ballance;
 };
 
-class DataManager{
+class DataManager {
 public:
 	fstream UsrFile;
 	fstream PkgFile;
@@ -44,18 +48,18 @@ public:
 	int checkExistPkg(string);
 
 	int verifyUsr(string, string);
-	int changePwd(string,string);
+	int changePwd(string, string);
 
 	int addUsr(User&);
-	int charge(string,double);
+	int charge(string, double);
 
 	Json::Value getUsrData(string);
 
 	int _addPkg(Package&);
 	int addPkg(User&, User&, double, int, string);
-	Json::Value getPkgData(string,char);
+	Json::Value getPkgData(string, char);
 
-	int receiptPkg(string,string);//uuid
+	int receiptPkg(string, string);//uuid
 
 	map<string, int> UsrMap;
 	map<string, int> PkgMap;

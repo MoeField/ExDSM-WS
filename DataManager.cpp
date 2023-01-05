@@ -5,9 +5,9 @@
 
 using namespace std;
 
-DataManager::DataManager(){ }
+DataManager::DataManager() {}
 
-DataManager::DataManager(string usrDataName,string pkgDataName ){
+DataManager::DataManager(string usrDataName, string pkgDataName) {
 	setUsrFile(usrDataName);
 	setPkgFile(pkgDataName);
 	setAdminFile("./data/admin.dat");
@@ -27,7 +27,7 @@ int DataManager::setUsrFile(string name) {
 		User tmp;
 		int n = 0;
 		UsrFile.seekg(0, ios::beg);
-		while (!UsrFile.eof()&& UsrFile.peek()!=EOF) {
+		while (!UsrFile.eof() && UsrFile.peek() != EOF) {
 			UsrFile.read((char*)&tmp, sizeof(User));
 			users.push_back(tmp);
 			int n = users.size() - 1;//vector下标从0开始
@@ -35,7 +35,7 @@ int DataManager::setUsrFile(string name) {
 			UsrMap[tmp.UUID] = n;
 		}
 	}
-	else{
+	else {
 		cout << "usrFileNotFound,CreatNewOne.\n" << endl;
 		UsrFile.open(name, ios::out | ios::binary);
 		UsrFile.close(); UsrFile.clear();
@@ -43,7 +43,7 @@ int DataManager::setUsrFile(string name) {
 	}
 
 	UsrFile.seekg(0);
-	if (!UsrFile) {	return -1; }
+	if (!UsrFile) { return -1; }
 	return 0;
 }
 
@@ -61,10 +61,10 @@ int DataManager::setPkgFile(string name) {
 			PkgToMap[tmp.to].push_back(n);
 		}
 	}
-	else{
+	else {
 		cout << "pkgFileNotFound,CreatNewOne.\n" << endl;
 		PkgFile.open(name, ios::out | ios::binary);
-		PkgFile.close();PkgFile.clear();
+		PkgFile.close(); PkgFile.clear();
 		PkgFile.open(name, ios::in | ios::out | ios::binary);
 	}
 
@@ -99,7 +99,7 @@ int DataManager::setAdminFile(string name) {
 }
 
 int DataManager::checkExistUsr(string usrName) {
-	if (!UsrFile) { return -1; 	}
+	if (!UsrFile) { return -1; }
 	map<string, int>::iterator iter;
 	iter = UsrMap.find(usrName);
 	if (iter == UsrMap.end()) { return -404; }
@@ -119,7 +119,7 @@ int DataManager::verifyUsr(string usrName, string pwd) {
 }
 
 int DataManager::changePwd(string usrName, string newpwd) {
-	if (strcmp(usrName.c_str(), "admin")==0) {
+	if (strcmp(usrName.c_str(), "admin") == 0) {
 		if (checkPwd(newpwd, 0) == 0) {
 			strcpy_s(admin.pwd, 17, newpwd.c_str());
 			AdminFile.seekp(0);
@@ -137,7 +137,7 @@ int DataManager::changePwd(string usrName, string newpwd) {
 		UsrFile.write((char*)&users[seq], sizeof(User));
 		return 0;
 	}
-	else {return -400;}
+	else { return -400; }
 
 }
 
@@ -172,7 +172,7 @@ int DataManager::charge(string usr, double amount) {
 
 Json::Value DataManager::getUsrData(string usr) {
 	Json::Value j;
-	if (strcmp(usr.c_str(), "admin") == 0 ) {
+	if (strcmp(usr.c_str(), "admin") == 0) {
 		for (int seq = 0; seq < users.size(); ++seq) {
 			Json::Value res;
 			res["usrname"] = users[seq].userName;
@@ -207,12 +207,12 @@ int DataManager::checkExistPkg(string uuid) {
 	if (!PkgFile) { return -1; }
 	map<string, int>::iterator iter;
 	iter = PkgMap.find(uuid);
-	if (iter == PkgMap.end()) {	return -404; }
+	if (iter == PkgMap.end()) { return -404; }
 	else { return PkgMap[uuid]; }
 }
 
 int DataManager::_addPkg(Package& tmp) {
-	if (!PkgFile||!UsrFile) { return -1; }
+	if (!PkgFile || !UsrFile) { return -1; }
 	int id = checkExistPkg(tmp.UUID);
 	if (id != -404) {
 		return -500;
@@ -327,14 +327,14 @@ Json::Value DataManager::getPkgData(string usr, char w) {
 	return res;
 }
 
-int DataManager::receiptPkg(string usr,string pkgUid) {
+int DataManager::receiptPkg(string usr, string pkgUid) {
 	int seq = PkgMap[pkgUid];
 	if (seq < 0) { return -404; }
 	if (strcmp(packages[seq].to, usr.c_str()) != 0) {
 		return -400;
 	}
-	int res= packages[seq].receiption();
-	PkgFile.seekp(seq*sizeof(Package), ios::beg);
+	int res = packages[seq].receiption();
+	PkgFile.seekp(seq * sizeof(Package), ios::beg);
 	PkgFile.write((char*)&packages[seq], sizeof(Package));
 	return res;
 }
