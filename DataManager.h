@@ -10,6 +10,7 @@
 #include "user.h"
 #include "pkg.h"
 
+#include "json/json.h"
 #include <vector>
 #include <map>
 
@@ -35,16 +36,19 @@ public:
 	int verifyUsr(string, string);
 	
 	int addUsr(User&);
-	int charge(double);
+	int charge(string,double);
+	Json::Value getUsrData(string, int);
 
 	int _addPkg(Package&);
 	int addPkg(User&, User&, double, int, string);
+	Json::Value getPkgData(string,char);
 
-	int receiptPkg(string);//uuid
-private:
+	int receiptPkg(string,string);//uuid
+
 	map<string, int> UsrMap;
 	map<string, int> PkgMap;
 	map<string, vector<int> > PkgFromMap;
 	map<string, vector<int> > PkgToMap;
 };
+
 

@@ -51,12 +51,10 @@ int Package::pack(User& fromUsr, User& toUsr, int t, std::string describe) {
 	return 0;
 }
 
-int Package::receipt() {
+int Package::receiption() {
 	if (status == 0) {
 		status = 1;
 		return 0;
 	}
-	else {
-		return -1;
-	}
+	else { return -1; }
 }

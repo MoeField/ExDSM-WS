@@ -12,7 +12,7 @@ public:
 	Package();
 	Package(User&, User&, int, std::string);
 	int pack(User&, User&, int, std::string);
-	int receipt();
+	int receiption();
 
 	char from[32];
 	char fAddress[256];

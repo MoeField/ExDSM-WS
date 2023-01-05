@@ -41,8 +41,11 @@ User::User(
 }
 
 int User::changePwd(string pwd) {
-	strcpy_s(password, 17, pwd.c_str());
-	return 0;
+	int res = checkPwd(pwd,0);//
+	if (res == 0) {
+		strcpy_s(password, 17, pwd.c_str()); 
+	}
+	return res;
 }
 
 

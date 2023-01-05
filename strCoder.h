@@ -17,6 +17,10 @@ void string2num(std::string str, double& num) {
 	std::stringstream ss; ss << str; ss >> num;
 }
 
+void string2num(std::string str, int& num) {
+	std::stringstream ss; ss << str; ss >> num;
+}
+
 std::string StringToUTF8(const std::string& gbkData)
 {
 	const char* GBK_LOCALE_NAME = "CHS";

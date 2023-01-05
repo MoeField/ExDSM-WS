@@ -112,6 +112,7 @@
     <ClInclude Include="json\json-forwards.h" />
     <ClInclude Include="json\json.h" />
     <ClInclude Include="pkg.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="strCoder.h" />
     <ClInclude Include="user.h" />
   </ItemGroup>
@@ -124,6 +125,9 @@
   <ItemGroup>
     <None Include="webpages\index.css" />
     <None Include="webpages\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ExDSM-WS.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

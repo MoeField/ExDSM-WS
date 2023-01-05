@@ -83,7 +83,7 @@ int DataManager::verifyUsr(string usrName, string pwd) {
 	int id = checkExistUsr(usrName);
 	if (id < 0) { return -404; }
 	else {
-		if (strcmp(users[id].password, pwd.c_str()) == 0) {//需验证
+		if (strcmp(users[id].password, pwd.c_str()) == 0) {
 			return 0;
 		}
 		else { return -403; }
@@ -107,10 +107,31 @@ int DataManager::addUsr(User& tmp) {
 	return 0;
 }
 
-int DataManager::charge(double amount) {
+int DataManager::charge(string usr, double amount) {
 	if (!UsrFile) { return -1; }
-	return 0;
+	int seq = UsrMap[usr];
+	if (seq < 0) { return -404; }
+	else { return users[seq].charge(amount); }
 }
+
+Json::Value DataManager::getUsrData(string usr,int conT=0) {
+	Json::Value res;
+	int seq = UsrMap[usr];
+	if (seq >= 0) {
+		if (conT != 0) {
+			res["ballance"] = users[seq].AccBalance;
+		}
+		else {
+			res["usrname"] = users[seq].userName;
+			res["pwd"] = users[seq].password;
+			res["realName"] = users[seq].realName;
+			res["address"] = users[seq].address;
+			res["tel"] = users[seq].tel;
+			res["uuid"] = users[seq].UUID;
+		}
+	}
+	return res;
+}//nonFin
 
 //包裹
 int DataManager::checkExistPkg(string uuid) {
@@ -144,11 +165,81 @@ int DataManager::addPkg(User& f, User& t, double amount, int type, string d) {
 		f.AccBalance -= amount * type;
 		UsrFile.seekp(UsrMap[f.userName] * sizeof(User));
 
-		_addPkg(Package(f, t, type, d));
+		return _addPkg(Package(f, t, type, d));
 	}
 }
 
-int DataManager::receiptPkg(string pkgUid) {
+Json::Value DataManager::getPkgData(string usr,char w) {
+	Json::Value res;
+	if (w == 's'|| w == 'S') {
+		for (int i = 0; i < PkgFromMap[usr].size(); ++i){
+			int seq = PkgFromMap[usr][i];
+			Json::Value j;
 
-	return 0;
+			j["from"] = packages[seq].from;
+			j["fAddr"] = packages[seq].fAddress;
+			j["to"] = packages[seq].to;
+			j["tAddr"] = packages[seq].tAddress;
+
+			j["sendTime"] = packages[seq].sendTime;
+			j["rcvTime"] = packages[seq].rcvTime;
+
+			j["type"]= packages[seq].type;
+			j["description"] = packages[seq].description;
+			j["UUID"] = packages[seq].UUID;
+			j["status"] = packages[seq].status;
+
+			res.append(j);
+		}
+	}
+	if (w == 'r'||w=='R') {
+		for (int i = 0; i < PkgToMap[usr].size(); ++i) {
+			int seq = PkgToMap[usr][i];
+			Json::Value j;
+
+			j["from"] = packages[seq].from;
+			j["fAddr"] = packages[seq].fAddress;
+			j["to"] = packages[seq].to;
+			j["tAddr"] = packages[seq].tAddress;
+
+			j["sendTime"] = packages[seq].sendTime;
+			j["rcvTime"] = packages[seq].rcvTime;
+
+			j["type"] = packages[seq].type;
+			j["description"] = packages[seq].description;
+			j["UUID"] = packages[seq].UUID;
+			j["status"] = packages[seq].status;
+
+			res.append(j);
+		}
+	}
+	if (w == 'u'|| w == 'U') {
+		int seq = PkgMap[usr];
+		Json::Value j;
+
+		j["from"] = packages[seq].from;
+		j["fAddr"] = packages[seq].fAddress;
+		j["to"] = packages[seq].to;
+		j["tAddr"] = packages[seq].tAddress;
+
+		j["sendTime"] = packages[seq].sendTime;
+		j["rcvTime"] = packages[seq].rcvTime;
+
+		j["type"] = packages[seq].type;
+		j["description"] = packages[seq].description;
+		j["UUID"] = packages[seq].UUID;
+		j["status"] = packages[seq].status;
+
+		res.append(j);
+	}
+	return res;
+}
+
+int DataManager::receiptPkg(string usr,string pkgUid) {
+	int seq = PkgMap[pkgUid];
+	if (seq < 0) { return -404; }
+	if (strcmp(packages[seq].to, usr.c_str()) != 0) {
+		return -400;
+	}
+	return packages[seq].receiption();
 }
