@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8" name="author" content="阮立坤&苏年祥" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>魔幻的管理员界面</title>
+    <link rel="stylesheet" href="admin.css">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="form-box-1 ">
+            <div class="login-box">
+                <h1>login</h1>
+                <form id="login">
+                    <input type="text" placeholder="admin" id="login_UsrName"><br>
+                    <input type="password" placeholder="密码" id="login_pwd"><br>
+                </form>
+                <button id="loginButton">登录</button>
+            </div>
+        </div>
+        <div class="con-box right ">
+            <h2>欢迎</span></h2>
+            <p>速速开始<span>整活</span></p>
+            <img src="3.png" alt=" ">
+        </div>
+        <hr>
+        <div class="form-box-2 hidden">
+            <div class="first">
+                <button id="查看用户信息">查看用户信息</button>
+            </div>
+            <div class="second">
+                <button id="查看快递">查看快递</button>
+            </div>
+            <div class="third">
+                <button id="查看余额">查看余额</button>
+            </div>
+        </div>
+        <div class="box box-1 hidden">
+            <h2>用户信息</h2>
+            <ul id="accData"></ul><br>
+        </div>
+        <div class="box box-2 hidden">
+            <h2>查看快递</h2>
+            <form id="inquirePkg">
+                <input type="text" placeholder="用户" id="inq_uuid"><br>
+            </form>
+            <button id="确认查询">查询</button>
+            <form id="inquirePkg">
+                <input type="text" placeholder="时间" id="inq_uuid"><br>
+            </form>
+            <button id="确认查询">查询</button>
+            <form id="inquirePkg">
+                <input type="text" placeholder="运单号" id="inq_uuid"><br>
+            </form>
+            <button id="确认查询">查询</button>
+            <ul id="InqPkg"></ul>
+        </div>
+        <div class="box box-3 hidden">
+            <h2>查看余额</h2>
+            <ul id="ballance"></ul><br>
+        </div>
+    </div>
+    <script type="text/javascript" src="admin.js"></script>
+    <script>
+        let form_box_1 = document.getElementsByClassName('form-box-1')[0];
+        let login_box = document.getElementsByClassName('login-box')[0];
+        let loginButton = document.getElementById('loginButton');
+        let form_box_2 = document.getElementsByClassName('form-box-2')[0];
+        let right = document.getElementsByClassName('right')[0];
+        let 查看用户信息 = document.getElementById('查看用户信息');
+        let 查看快递 = document.getElementById('查看快递');
+        let 查看余额 = document.getElementById('查看余额');
+        let box_1 = document.getElementsByClassName('box-1')[0];
+        let box_2 = document.getElementsByClassName('box-2')[0];
+        let box_3 = document.getElementsByClassName('box-3')[0];
+        loginButton.addEventListener('click', function (){
+            form_box_1.classList.add('hidden');
+            login_box.classList.add('hidden');
+            right.classList.add('hidden');
+            form_box_2.classList.remove('hidden');
+        });
+        查看用户信息.addEventListener('click', function (){
+            box_2.classList.add('hidden');
+            box_3.classList.add('hidden');
+            box_1.classList.remove('hidden');
+        });
+        查看快递.addEventListener('click', function (){
+            box_1.classList.add('hidden');
+            box_3.classList.add('hidden');
+            box_2.classList.remove('hidden');
+        });
+        查看余额.addEventListener('click', function (){
+            box_1.classList.add('hidden');
+            box_2.classList.add('hidden');
+            box_3.classList.remove('hidden');
+        });
+        
+
+    </script>
+</body>
+
+</html>

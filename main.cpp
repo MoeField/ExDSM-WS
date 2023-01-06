@@ -32,7 +32,13 @@ string getHtmlCont(string fileName) {
 //页面服务
 void index(const httplib::Request& req, httplib::Response& rsp) {
 	cout << "httplib server recv a req:" << req.path << endl;
-	rsp.set_content(getHtmlCont("./webpages/index.html"), "text/html");
+	rsp.set_content(getHtmlCont("./webpages/user.html"), "text/html");
+	rsp.status = 200;
+}
+
+void adminPage(const httplib::Request& req, httplib::Response& rsp) {
+	cout << "httplib server recv a req:" << req.path << endl;
+	rsp.set_content(getHtmlCont("./webpages/admin.html"), "text/html");
 	rsp.status = 200;
 }
 
@@ -404,6 +410,7 @@ int main() {
 	//网页服务
 	svr.Get("/", index);
 	svr.Get("/index", index);
+	svr.Get("/admin", adminPage);
 
 	//Api服务
 	svr.Post("/api/login", login);

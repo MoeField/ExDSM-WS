@@ -14,11 +14,10 @@ body{
     backdrop-filter: blur(3px);
 }
 
-.container{
+.container-fluid{
     background: transparent;
     width: 1000px;
     height: 680px;
-    border-radius:5px;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
     position: relative;
 }
@@ -40,7 +39,7 @@ body{
     transition: 0.5s ease-in-out;
 }
 
-.register-box, .login-box{
+.login-box{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -61,7 +60,7 @@ h1{
     letter-spacing: 10px;
 }
 
-input{
+form input{
     background-color: transparent;
     width: 70%;
     color: rgb(100, 233, 195);
@@ -69,23 +68,23 @@ input{
     border-bottom: 1px solid rgb(255, 255, 255);
     padding: 10px 0;
     text-indent: 10px;
-    margin: 8px 0;
+    margin: 8px 90px;
     font-size: 20px;
     letter-spacing: 2px;
 }
 
-input::placeholder{
+form input::placeholder{
     color: rgb(44, 255, 94);
 }
 
-input:focus{
+form input:focus{
     color: #ffffff;
     outline: none;
     border-bottom:1px solid #ffffff80 ;
     transition: 0.5s;
 }
 
-input:focus::placeholder{
+form input:focus::placeholder{
     opacity: 0;
 }
 
@@ -120,10 +119,6 @@ input:focus::placeholder{
     transform: translateY(-50%);
 }
 
-.con-box.left{
-    left: -2%;
-}
-
 .con-box.right{
     right: -2%;
 }
@@ -155,24 +150,6 @@ input:focus::placeholder{
     margin: 40px 0;
 }
 
-.con-box button{
-    margin-top: 3%;
-    background-color: rgba(255, 255, 255, 0.089);
-    color: #ffffff;
-    font-size: 20px;
-    border: 1px solid #d3b7d8;
-    padding: 6px 10px;
-    border-radius: 5px;
-    letter-spacing: 1px;
-    outline: none ;
-    cursor: pointer;
-}
-
-.con-box button:hover{
-    background-color: #4b97ed;
-    color: #fff;
-}
-
 .form-box-2{
     position: absolute;
     background-size: 250px 680px;
@@ -182,10 +159,10 @@ input:focus::placeholder{
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.first, .second, .third, .forth, .fifth, .sixth{
+.first, .second, .third{
     display: flex;
     flex-direction: column;
-    margin: 32px 35px;
+    margin: 110px 35px;
     width: 185px;
     height: 75px;
     border: none;
@@ -208,7 +185,7 @@ input:focus::placeholder{
 .box{
     display: flex;
     flex-direction: column;
-    margin: 0 250px;
+    margin: 25px 250px;
     width: 750px;
     height: 680px;
     align-items: center;
@@ -232,11 +209,11 @@ input:focus::placeholder{
     color: rgb(100, 233, 195);
     border: none;
     border-bottom: 1px solid rgb(0, 0, 0);
-    padding: 10px 0;
+    padding:-20px 0;
     text-indent: 10px;
-    margin: 8px 0;
+    margin: -20px 0;
     font-size: 20px;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
 }
 
 .box input::placeholder{

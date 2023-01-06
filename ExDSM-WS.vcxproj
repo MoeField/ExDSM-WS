@@ -117,16 +117,6 @@
     <ClInclude Include="user.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="webpages\1.jpg" />
-    <Image Include="webpages\2.jpg" />
-    <Image Include="webpages\3.png" />
-    <Image Include="webpages\4.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="webpages\index.css" />
-    <None Include="webpages\index.html" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="ExDSM-WS.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
