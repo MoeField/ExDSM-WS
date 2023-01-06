@@ -54,6 +54,7 @@ $("#regButton").on("click", function () {
             error: function (status, errorThrown) {
                 console.log(status);
                 alert("请检查用户名或密码！" + errorThrown);
+                location.reload();
             }
         });
         return false;
@@ -118,6 +119,7 @@ $("#regButton").on("click", function () {
                 "uuid" : pkgUid
             },
             success: function (data) {
+                alert("签收成功！");
                 /*这个方法里是ajax发送请求成功之后执行的代码*/
                 console.log(data);
             },

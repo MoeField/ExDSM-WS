@@ -117,7 +117,9 @@
             <button id="确认修改">确认修改</button>
         </div>
     </div>
+
     <script type="text/javascript" src="user.js"></script>
+
     <script>
         let tab_login = document.getElementById('tab_login');
         let tab_register = document.getElementById('tab_register');
@@ -130,21 +132,7 @@
         let right = document.getElementsByClassName('right')[0];
         let form_box_2 = document.getElementsByClassName('form-box-2')[0];
 
-        let box_1 = document.getElementsByClassName('box-1')[0];
-        let box_2 = document.getElementsByClassName('box-2')[0];
-        let box_3 = document.getElementsByClassName('box-3')[0];
-        let box_4 = document.getElementsByClassName('box-4')[0];
-        let box_5 = document.getElementsByClassName('box-5')[0];
-        let box_6 = document.getElementsByClassName('box-6')[0];
-
-        let 我的包裹 = document.getElementById('我的包裹');
-        let 寄出包裹 = document.getElementById('寄出包裹');
-        let 快递查询 = document.getElementById('快递查询');
-        let 我的钱包 = document.getElementById('我的钱包');
-        let 我的账户 = document.getElementById('我的账户');
-        let 密码修改 = document.getElementById('密码修改');
-
-        login_Button.addEventListener('click', function (){
+        login_Button.addEventListener('click', function () {
             form_box_1.classList.add('hidden');
             register_box.classList.add('hidden');
             login_box.classList.add('hidden');
@@ -153,65 +141,79 @@
             form_box_2.classList.remove('hidden');
         });
 
-        tab_register.addEventListener('click', function (){
+        tab_register.addEventListener('click', function () {
             form_box_1.style.transform = 'translateX(80%)';
             login_box.classList.add('hidden');
             register_box.classList.remove('hidden');
         });
-        tab_login.addEventListener('click', function (){
+        tab_login.addEventListener('click', function () {
             form_box_1.style.transform = 'translateX(0%)';
             register_box.classList.add('hidden');
             login_box.classList.remove('hidden');
         });
 
-        我的包裹.addEventListener('click', function (){
+        let 收包裹 = document.getElementById('收包裹');
+        let 寄包裹 = document.getElementById('寄包裹');
+        let 快递查询 = document.getElementById('快递查询');
+        let 我的钱包 = document.getElementById('我的钱包');
+        let 我的账户 = document.getElementById('我的账户');
+        let 密码修改 = document.getElementById('密码修改');
+
+        let box_1 = document.getElementsByClassName('box-1')[0];
+        let box_2 = document.getElementsByClassName('box-2')[0];
+        let box_3 = document.getElementsByClassName('box-3')[0];
+        let box_4 = document.getElementsByClassName('box-4')[0];
+        let box_5 = document.getElementsByClassName('box-5')[0];
+        let box_6 = document.getElementsByClassName('box-6')[0];
+
+        收包裹.addEventListener('click', function () {
             box_2.classList.add('hidden');
             box_3.classList.add('hidden');
             box_4.classList.add('hidden');
             box_5.classList.add('hidden');
             box_6.classList.add('hidden');
             box_1.classList.remove('hidden');
-        });
-        寄出包裹.addEventListener('click', function (){
+        }, false);
+        寄包裹.addEventListener('click', function () {
             box_1.classList.add('hidden');
             box_3.classList.add('hidden');
             box_4.classList.add('hidden');
             box_5.classList.add('hidden');
             box_6.classList.add('hidden');
             box_2.classList.remove('hidden');
-        });
-        快递查询.addEventListener('click', function (){
+        }, false);
+        快递查询.addEventListener('click', function () {
             box_1.classList.add('hidden');
             box_2.classList.add('hidden');
             box_4.classList.add('hidden');
             box_5.classList.add('hidden');
             box_6.classList.add('hidden');
             box_3.classList.remove('hidden');
-        });
-        我的钱包.addEventListener('click', function (){
+        }, false);
+        我的钱包.addEventListener('click', function () {
             box_1.classList.add('hidden');
             box_2.classList.add('hidden');
             box_3.classList.add('hidden');
             box_5.classList.add('hidden');
             box_6.classList.add('hidden');
             box_4.classList.remove('hidden');
-        });
-        我的账户.addEventListener('click', function (){
+        }, false);
+        我的账户.addEventListener('click', function () {
             box_1.classList.add('hidden');
             box_2.classList.add('hidden');
             box_3.classList.add('hidden');
             box_4.classList.add('hidden');
             box_6.classList.add('hidden');
             box_5.classList.remove('hidden');
-        });
-        密码修改.addEventListener('click', function (){
+        }, false);
+        密码修改.addEventListener('click', function () {
             box_1.classList.add('hidden');
             box_2.classList.add('hidden');
             box_3.classList.add('hidden');
             box_4.classList.add('hidden');
             box_5.classList.add('hidden');
             box_6.classList.remove('hidden');
-        });
+        }, false);
 
     </script>
 </body>

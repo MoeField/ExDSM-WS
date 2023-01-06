@@ -19,6 +19,7 @@ $("#loginButton").on("click", function () {
         error: function (status, errorThrown) {
             console.log(status);
             alert("请检查用户名或密码！" + errorThrown);
+            location.reload();
         }
     });
     return false;
@@ -124,13 +125,12 @@ $("#loginButton").on("click", function () {
                 url: "/adminApi/adminChangePwd",
                 type: "POST",
                 data: {
-                    "usrName": UsrName,
                     "password": pwd,
                     "newPassword": npwd
                 },
                 success: function () {
                     /*这个方法里是ajax发送请求成功之后执行的代码*/
-                    alert("请重新登陆！" + msg);
+                    alert("请重新登陆！");
                     location.reload();
                 },
                 error: function (msg) {
