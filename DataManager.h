@@ -39,21 +39,21 @@ public:
 	DataManager();
 	DataManager(string, string);
 	~DataManager();
-
+	//初始化储存文件
 	int setUsrFile(string);
 	int setPkgFile(string);
 	int setAdminFile(string);
-
-	int checkExistUsr(string);
-	int checkExistPkg(string);
+	//查找
+	int checkExistUsr(string);//根据用户名
+	int checkExistPkg(string);//uuid
 
 	int verifyUsr(string, string);
 	int changePwd(string, string);
 
-	int addUsr(User&);
-	int charge(string, double);
+	int addUsr(User&);//添加新用户
+	int charge(string, double);//充钱
 
-	Json::Value getUsrData(string);
+	Json::Value getUsrData(string);//获取用户信息
 
 	int _addPkg(Package&);
 	int addPkg(User&, User&, double, int, string);
@@ -61,8 +61,8 @@ public:
 
 	int receiptPkg(string, string);//uuid
 
-	map<string, int> UsrMap;
-	map<string, int> PkgMap;
+	map<string, int> UsrMap; 
+	map<string, int> PkgMap;// uuid->下标
 	map<string, vector<int> > PkgFromMap;
 	map<string, vector<int> > PkgToMap;
 };

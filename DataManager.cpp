@@ -244,6 +244,7 @@ int DataManager::addPkg(User& f, User& t, double amount, int type, string d) {
 Json::Value DataManager::getPkgData(string usr, char w) {
 	Json::Value res;
 	if ((w == 'a' || w == 'A') && (strcmp(usr.c_str(), "admin") == 0)) {
+		//admin、all，返回全部包裹信息
 		for (int seq = 0; seq < packages.size(); ++seq) {
 			Json::Value j;
 
@@ -263,7 +264,7 @@ Json::Value DataManager::getPkgData(string usr, char w) {
 			res.append(j);
 		}
 	}
-	if (w == 's' || w == 'S') {
+	if (w == 's' || w == 'S') {//send
 		for (int i = 0; i < PkgFromMap[usr].size(); ++i) {
 			int seq = PkgFromMap[usr][i];
 			Json::Value j;
@@ -284,7 +285,7 @@ Json::Value DataManager::getPkgData(string usr, char w) {
 			res.append(j);
 		}
 	}
-	if (w == 'r' || w == 'R') {
+	if (w == 'r' || w == 'R') {//收件
 		for (int i = 0; i < PkgToMap[usr].size(); ++i) {
 			int seq = PkgToMap[usr][i];
 			Json::Value j;
@@ -305,7 +306,7 @@ Json::Value DataManager::getPkgData(string usr, char w) {
 			res.append(j);
 		}
 	}
-	if (w == 'u' || w == 'U') {
+	if (w == 'u' || w == 'U') {//uuid
 		int seq = PkgMap[usr];
 		Json::Value j;
 
