@@ -159,10 +159,10 @@ form input:focus::placeholder{
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.first, .second, .third{
+.first, .second, .third .forth .fifth{
     display: flex;
     flex-direction: column;
-    margin: 110px 35px;
+    margin: 80px 35px;
     width: 185px;
     height: 75px;
     border: none;

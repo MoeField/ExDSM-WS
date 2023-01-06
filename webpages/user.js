@@ -280,7 +280,7 @@ $("#regButton").on("click", function () {
             },
             success: function () {
                 /*这个方法里是ajax发送请求成功之后执行的代码*/
-                alert("请重新登陆！" + msg);
+                alert("请重新登陆！");
                 location.reload();
             },
             error: function (msg) {

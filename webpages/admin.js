@@ -147,7 +147,7 @@ $("#loginButton").on("click", function () {
 function showUsrData(data) {
     for (let i = 0; i < data.length; i++) {
         let strEnd = "";
-        //strEnd += "<h1>" + (i + 1).toString() + "</h1>";
+        strEnd += "<h1>" + (i + 1).toString() + "</h1>";
         strEnd += "<p class='firstP'><span class='title'>用户名：</span> <span>"
             + data[i].usrname
             + "</span></p> <div class='row'>"

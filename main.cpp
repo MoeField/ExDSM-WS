@@ -179,7 +179,7 @@ void checkRcv(const Request& req, Response& rsp) {
 void checkPkgInUid(const Request& req, Response& rsp) {
 	cout << "httplib server recv a req:" << req.path << "\t" << UrlDecode(req.body.c_str()) << endl;
 	string uuid;
-	uuid = req.get_param_value("usrName").c_str();
+	uuid = req.get_param_value("uuid").c_str();
 
 	int id = Manager.checkExistPkg(uuid);
 	if (id >= 0) {
