@@ -119,6 +119,22 @@
   <ItemGroup>
     <ResourceCompile Include="ExDSM-WS.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="webpages\admin.css" />
+    <None Include="webpages\admin.html" />
+    <None Include="webpages\admin.js" />
+    <None Include="webpages\script.js" />
+    <None Include="webpages\user.css" />
+    <None Include="webpages\user.html" />
+    <None Include="webpages\user.js" />
+    <None Include="webpages\_index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="webpages\1.jpg" />
+    <Image Include="webpages\2.jpg" />
+    <Image Include="webpages\3.png" />
+    <Image Include="webpages\4.jpg" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

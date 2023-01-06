@@ -30,7 +30,13 @@ string getHtmlCont(string fileName) {
 }
 
 //页面服务
-void index(const httplib::Request& req, httplib::Response& rsp) {
+void _index(const httplib::Request& req, httplib::Response& rsp) {
+	cout << "httplib server recv a req:" << req.path << endl;
+	rsp.set_content(getHtmlCont("./webpages/_index.html"), "text/html");
+	rsp.status = 200;
+}
+
+void userPage(const httplib::Request& req, httplib::Response& rsp) {
 	cout << "httplib server recv a req:" << req.path << endl;
 	rsp.set_content(getHtmlCont("./webpages/user.html"), "text/html");
 	rsp.status = 200;
@@ -324,13 +330,17 @@ void adminBallance(const Request& req, Response& rsp) {
 	//处理请求
 	string pwd;
 	pwd = UrlDecode(req.get_param_value("password").c_str());
-	Json::Value j;
+	cout << pwd << "\t" << Manager.admin.pwd << endl;
+
 	if (strcmp(pwd.c_str(), Manager.admin.pwd) == 0) {
+		
+		Json::Value j;
 		j["ballance"] = Manager.admin.ballance;
 		string res = j.toStyledString();
 		rsp.set_header("Content-Type", "application/json;charset=UTF-8");
 		rsp.set_content(res, "application/json;charset=UTF-8");
 		rsp.status = 200;
+		return;
 	}
 	else { rsp.status = 401; }
 }
@@ -408,8 +418,8 @@ int main() {
 	Server svr;
 	svr.set_base_dir("./webpages");
 	//网页服务
-	svr.Get("/", index);
-	svr.Get("/index", index);
+	svr.Get("/index", _index);
+	svr.Get("/user", userPage);
 	svr.Get("/admin", adminPage);
 
 	//Api服务
@@ -432,6 +442,7 @@ int main() {
 	svr.Post("/adminApi/adminGetUsrData", adminGetUsrData);
 	svr.Post("/adminApi/adminGetPkgData", adminGetPkgData);
 	svr.Post("/adminApi/checkPkgInUid", checkPkgInUid);
+	svr.Post("/adminApi/checkBallance", adminBallance);
 	svr.Post("/adminApi/adminChangePwd", adminChangePwd);
 
 	//异常处理

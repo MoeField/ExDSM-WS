@@ -68,4 +68,44 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="webpages\_index.html">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="webpages\admin.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="webpages\admin.html">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="webpages\admin.js">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="webpages\script.js">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="webpages\user.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="webpages\user.html">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="webpages\user.js">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="webpages\1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="webpages\2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="webpages\3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="webpages\4.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

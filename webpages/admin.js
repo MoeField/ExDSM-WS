@@ -1,39 +1,35 @@
-    $("#loginButton").on("click", function () {
-        var UsrName = $("#login input:eq(0)").val();
-        var pwd = $("#login input:eq(1)").val();
+$("#loginButton").on("click", function () {
+    var pwd = $("#login input:eq(0)").val();
 
-        $.ajax({
-            //几个参数需要注意一下
-            type: "POST",//方法类型
-            url: "api/login",//url
-            //dataType: "text",//预期服务器返回的数据类型[xml,html,script,json,jsonp,text]
-            data: {
-                "usrName": UsrName,
-                "password": pwd
-            },
-            success: function (response, status, xhr) {
-                console.log(response);	//服务器返回的信息
-                console.log(status);	//服务器返回的信息
-                console.log(xhr.status);	//状态码,   要看其他的直接 输出 xhr 就行
-                console.log(xhr.getAllResponseHeaders()); //响应头部
-                alert("登录成功！");
-            },
-            error: function (status, errorThrown) {
-                console.log(status);
-                alert("请检查用户名或密码！" + errorThrown);
-            }
-        });
-        return false;
-    }),
+    $.ajax({
+        //几个参数需要注意一下
+        type: "POST",//方法类型
+        url: "adminApi/adminLogin",//url
+        //dataType: "text",//预期服务器返回的数据类型[xml,html,script,json,jsonp,text]
+        data: {
+            "password": pwd
+        },
+        success: function (response, status, xhr) {
+            console.log(response);	//服务器返回的信息
+            console.log(status);	//服务器返回的信息
+            console.log(xhr.status);	//状态码,   要看其他的直接 输出 xhr 就行
+            console.log(xhr.getAllResponseHeaders()); //响应头部
+            alert("登录成功！");
+        },
+        error: function (status, errorThrown) {
+            console.log(status);
+            alert("请检查用户名或密码！" + errorThrown);
+        }
+    });
+    return false;
+}),
 
     $("#查看用户信息").on("click", function () {
-        var UsrName = $("#login input:eq(0)").val();
-        var pwd = $("#login input:eq(1)").val();
+        var pwd = $("#login input:eq(0)").val();
         $.ajax({
-            url: "/api/getUsrData",
+            url: "/adminApi/adminGetUsrData",
             type: "POST",
             data: {
-                "usrName": UsrName,
                 "password": pwd
             },
             dataType: "json",
@@ -48,15 +44,34 @@
         });
     }),
 
-    $("#查看快递").on("click", function () {//by uuid
-        var UsrName = $("#login input:eq(0)").val();
-        var pwd = $("#login input:eq(1)").val();
-        var pkgUid = $("#inquirePkg input:eq(0)").val();
+    $("#查看所有快递").on("click", function () {//by uuid
+        var pwd = $("#login input:eq(0)").val();
         $.ajax({
-            url: "/api/checkPkgInUid",
+            url: "/adminApi/adminGetPkgData",
             type: "POST",
             data: {
-                "usrName": UsrName,
+                "password": pwd,
+            },
+            dataType: "json",
+            success: function (data) {
+                /*这个方法里是ajax发送请求成功之后执行的代码*/
+                console.log(data);
+                showPackageData(data, "#pkgData");//数据展示
+                alert("查询完毕");
+            },
+            error: function (msg) {
+                alert("ajax连接异常：" + msg);
+            }
+        });
+    }),
+
+    $("#确认查询").on("click", function () {//by uuid
+        var pwd = $("#login input:eq(0)").val();
+        var pkgUid = $("#inquirePkg input:eq(0)").val();
+        $.ajax({
+            url: "/adminApi/checkPkgInUid",
+            type: "POST",
+            data: {
                 "password": pwd,
                 "uuid": pkgUid
             },
@@ -74,22 +89,20 @@
     }),
 
     $("#查看余额").on("click", function () {
-        var UsrName = $("#login input:eq(0)").val();
-        var pwd = $("#login input:eq(1)").val();
+        var pwd = $("#login input:eq(0)").val();
         $.ajax({
-            url: "/api/getBallance",
+            url: "/adminApi/checkBallance",
             type: "POST",
             data: {
-                "usrName": UsrName,
                 "password": pwd
             },
             dataType: "json",
             success: function (data) {
                 /*这个方法里是ajax发送请求成功之后执行的代码*/
                 console.log(data);
-                let strEnd="";
-                strEnd +="<p id='ballance'>"
-                    + data.ballance 
+                let strEnd = "";
+                strEnd += "<p id='ballance'>"
+                    + data.ballance
                     + "</p>";
                 $("#ballance").append(strEnd);
             },
@@ -99,6 +112,36 @@
             }
         });
     }),
+
+    $("#确认修改").on("click", function () {
+        var pwd = $("#login input:eq(0)").val();
+
+        var npwd = $("#changePwd input:eq(0)").val();
+        var npwdR = $("#changePwd input:eq(1)").val();
+
+        if (npwd == npwdR) {
+            $.ajax({
+                url: "/adminApi/adminChangePwd",
+                type: "POST",
+                data: {
+                    "usrName": UsrName,
+                    "password": pwd,
+                    "newPassword": npwd
+                },
+                success: function () {
+                    /*这个方法里是ajax发送请求成功之后执行的代码*/
+                    alert("请重新登陆！" + msg);
+                    location.reload();
+                },
+                error: function (msg) {
+                    alert("ajax连接异常：" + msg);
+                }
+            });
+        }
+        else {
+            alert("两次密码不一致！");
+        }
+    });
 //-----------------------------------------//
 
 function showUsrData(data) {
