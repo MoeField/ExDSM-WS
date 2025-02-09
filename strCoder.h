@@ -24,7 +24,7 @@ void string2num(std::string str, int& num) {
 std::string StringToUTF8(const std::string& gbkData)
 {
 	const char* GBK_LOCALE_NAME = "CHS";
-	//GBK在windows下的locale name(.936, CHS ), linux下的locale名可能是"zh_CN.GBK"
+	//GBK鍦╳indows涓嬬殑locale name(.936, CHS ), linux涓嬬殑locale鍚嶅彲鑳芥槸"zh_CN.GBK"
 
 	std::wstring_convert<std::codecvt<wchar_t, char, mbstate_t>>
 		conv(new std::codecvt<wchar_t, char, mbstate_t>(GBK_LOCALE_NAME));
